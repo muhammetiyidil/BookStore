@@ -1,9 +1,14 @@
-﻿using BookStore.BookOperations.GetBooks;
+﻿using BookStore.BookOperations.DeleteBook;
+using BookStore.BookOperations.GetBookDetail;
+using BookStore.BookOperations.GetBooks;
 using BookStore.BookOperations.PostBook;
+using BookStore.BookOperations.UpdateBook;
 using BookStore.DBOperations;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
+using static BookStore.BookOperations.DeleteBook.DeleteBookQuery;
 using static BookStore.BookOperations.PostBook.PostBookQuery;
+using static BookStore.BookOperations.UpdateBook.UpdateBookQuery;
 using static System.Reflection.Metadata.BlobBuilder;
 
 namespace BookStore.Controllers
@@ -12,38 +17,41 @@ namespace BookStore.Controllers
     [Route("[controller]")]
     public class BookController : ControllerBase
     {
-        private readonly BookStoreDbContext _context;
-        private readonly GetBooksQuery _booksQuery;
+        private readonly BookStoreDbContext context;
+        private readonly GetBooksQuery booksQuery;
 
         public BookController(BookStoreDbContext context, GetBooksQuery booksQuery)
         {
-            _context = context;
-            _booksQuery = booksQuery;
+            this.context = context;
+            this.booksQuery = booksQuery;
         }
 
         [HttpGet]
         [Route("Books")]
         public IActionResult GetBooks()
         {
-            return Ok(_booksQuery.Handle());
+            return Ok(booksQuery.Handle());
         }
 
         [HttpGet]
         [Route("BookById{id}")]
         public IActionResult GetBookById(int id)
         {
-            var book = _context.Books.SingleOrDefault(x => x.Id == id);
-            if (book == null)
+            try
             {
-                return BadRequest();
+                GetBookDetailQuery query = new GetBookDetailQuery(context);
+                return Ok(query.Handle(id));
             }
-            return Ok(book);
+            catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public IActionResult AddBook([FromBody] PostBookModel book)
         {
-            PostBookQuery command = new PostBookQuery(_context); 
+            PostBookQuery command = new PostBookQuery(context); 
             try
             {
                 command.Model = book;
@@ -54,35 +62,36 @@ namespace BookStore.Controllers
                 return BadRequest(ex.Message);
             }
             return Ok();
-            
         }
 
         [HttpPut]
-        public IActionResult UpdateBook([FromBody] Book updatedBook)
+        [Route("{id}")]
+        public IActionResult UpdateBook(int id, [FromBody] UpdatedViewModel updatedBook)
         {
-            var book = _context.Books.SingleOrDefault(x => x.Id == updatedBook.Id);
-            if (book == null)
+            try
             {
-                return BadRequest();
+                UpdateBookQuery query = new UpdateBookQuery(context);
+                query.Handle(id, updatedBook);
             }
-            book.GenreId = updatedBook.GenreId != default ? updatedBook.GenreId : book.GenreId;
-            if (book.PageCount != default)
-                book.PageCount = updatedBook.PageCount;
-            if (book.Title != default)
-                book.Title = updatedBook.Title;
-            book.PublishDate = updatedBook.PublishDate != default ? updatedBook.PublishDate : book.PublishDate;
-            _context.SaveChanges();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return Ok();
         }
 
         [HttpDelete]
-        public IActionResult DeleteBook([FromBody] int id)
+        public IActionResult DeleteBook([FromBody] DeletedViewModel deletedBook)
         {
-            var book = _context.Books.SingleOrDefault(x => x.Id == id);
-            if (book == null)
-                return BadRequest();
-            _context.Books.Remove(book);
-            _context.SaveChanges();
+            try
+            {
+                DeleteBookQuery query = new DeleteBookQuery(context);
+                query.Handle(deletedBook);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
             return Ok();
         }
     }
