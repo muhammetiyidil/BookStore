@@ -1,7 +1,9 @@
+using AutoMapper;
 using BookStore.BookOperations.GetBooks;
 using BookStore.DBOperations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -11,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BookStoreDbContext>(options => options.UseInMemoryDatabase("BookStoreDb"));
 builder.Services.AddScoped<GetBooksQuery>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
 
 var app = builder.Build();
 

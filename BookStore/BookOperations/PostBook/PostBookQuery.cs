@@ -2,17 +2,20 @@
 using Microsoft.AspNetCore.Mvc;
 using BookStore.BookOperations.GetBooks;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace BookStore.BookOperations.PostBook
 {
     public class PostBookQuery
     {
         private readonly BookStoreDbContext _dbContext;
+        private readonly IMapper _mapper;
         public PostBookModel Model { get; set; }
 
-        public PostBookQuery(BookStoreDbContext dbContext)
+        public PostBookQuery(BookStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
         
         public void Handle()
@@ -20,11 +23,8 @@ namespace BookStore.BookOperations.PostBook
             var book = _dbContext.Books.SingleOrDefault(x => x.Title == Model.Title);
             if (book is not null)
                 throw new InvalidOperationException("Bu isimde kitap zaten mevcut");
-            book = new Book();
-            book.Title = Model.Title;
-            book.PublishDate = Model.PublishDate;
-            book.GenreId = Model.GenreId;
-            book.PageCount = Model.PageCount;
+
+            book = _mapper.Map<Book>(Model);
 
             _dbContext.Books.Add(book);
             _dbContext.SaveChanges();

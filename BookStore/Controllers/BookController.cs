@@ -1,4 +1,5 @@
-﻿using BookStore.BookOperations.DeleteBook;
+﻿using AutoMapper;
+using BookStore.BookOperations.DeleteBook;
 using BookStore.BookOperations.GetBookDetail;
 using BookStore.BookOperations.GetBooks;
 using BookStore.BookOperations.PostBook;
@@ -7,6 +8,7 @@ using BookStore.DBOperations;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using static BookStore.BookOperations.DeleteBook.DeleteBookQuery;
+using static BookStore.BookOperations.GetBooks.GetBooksQuery;
 using static BookStore.BookOperations.PostBook.PostBookQuery;
 using static BookStore.BookOperations.UpdateBook.UpdateBookQuery;
 using static System.Reflection.Metadata.BlobBuilder;
@@ -18,19 +20,21 @@ namespace BookStore.Controllers
     public class BookController : ControllerBase
     {
         private readonly BookStoreDbContext context;
-        private readonly GetBooksQuery booksQuery;
+        private readonly IMapper mapper;
 
-        public BookController(BookStoreDbContext context, GetBooksQuery booksQuery)
+        public BookController(BookStoreDbContext context, IMapper mapper)
         {
             this.context = context;
-            this.booksQuery = booksQuery;
+            this.mapper = mapper;
         }
 
         [HttpGet]
         [Route("Books")]
-        public IActionResult GetBooks()
+        public List<BookViewModel> GetBooks()
         {
-            return Ok(booksQuery.Handle());
+            GetBooksQuery booksQuery = new GetBooksQuery(context, mapper);
+            var result = booksQuery.Handle();
+            return result;
         }
 
         [HttpGet]
@@ -39,7 +43,7 @@ namespace BookStore.Controllers
         {
             try
             {
-                GetBookDetailQuery query = new GetBookDetailQuery(context);
+                GetBookDetailQuery query = new GetBookDetailQuery(context, mapper);
                 return Ok(query.Handle(id));
             }
             catch (Exception ex) 
@@ -51,7 +55,7 @@ namespace BookStore.Controllers
         [HttpPost]
         public IActionResult AddBook([FromBody] PostBookModel book)
         {
-            PostBookQuery command = new PostBookQuery(context); 
+            PostBookQuery command = new PostBookQuery(context, mapper); 
             try
             {
                 command.Model = book;

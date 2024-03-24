@@ -1,30 +1,24 @@
-﻿using BookStore.DBOperations;
+﻿using AutoMapper;
+using BookStore.Common;
+using BookStore.DBOperations;
 
 namespace BookStore.BookOperations.GetBooks
 {
     public class GetBooksQuery
     {
         private readonly BookStoreDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public GetBooksQuery(BookStoreDbContext dbContext)
+        public GetBooksQuery(BookStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public List<BookViewModel> Handle()
         {
             var bookList = _dbContext.Books.OrderBy(x => x.Id).ToList<Book>();
-            List<BookViewModel> bookViewModels = new List<BookViewModel>();
-            foreach (var book in bookList)
-            {
-                bookViewModels.Add(new BookViewModel
-                {
-                    Title = book.Title,
-                    Genre = ((GenreEnum)book.GenreId).ToString(),
-                    PageCount = book.PageCount,
-                    PublishTime = book.PublishDate.ToString("dd/MM/yyyy"),
-                });
-            }
+            List<BookViewModel> bookViewModels = _mapper.Map<List<BookViewModel>>(bookList);
             return bookViewModels;
         }
 
