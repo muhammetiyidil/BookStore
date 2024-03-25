@@ -6,15 +6,16 @@ namespace BookStore.BookOperations.DeleteBook
     public class DeleteBookQuery
     {
         private readonly BookStoreDbContext dbContext;
+        public DeletedViewModel Model { get; set; }
 
         public DeleteBookQuery(BookStoreDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public void Handle(DeletedViewModel deletedModel)
+        public void Handle()
         {
-            var book = dbContext.Books.SingleOrDefault(x => x.Title == deletedModel.Title);
+            var book = dbContext.Books.SingleOrDefault(x => x.Title == Model.Title);
             if (book == null)
                 throw new InvalidOperationException("Kitap mevcut değil!");
             dbContext.Books.Remove(book);

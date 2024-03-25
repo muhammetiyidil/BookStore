@@ -9,15 +9,17 @@ namespace BookStore.BookOperations.GetBookDetail
     {
         private readonly BookStoreDbContext dbContext;
         private readonly IMapper _mapper;
+        public BookDetailViewModel Model { get; set; }
+        public int Id { get; set; }
         public GetBookDetailQuery (BookStoreDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public BookDetailViewModel Handle(int id)
+        public BookDetailViewModel Handle()
         {
-            var book = dbContext.Books.SingleOrDefault(x => x.Id == id);
+            var book = dbContext.Books.SingleOrDefault(x => x.Id == Id);
             if (book == null)
             {
                 throw new InvalidOperationException("Kitap mevcut değil!");
