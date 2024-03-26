@@ -6,8 +6,9 @@ namespace BookStore.BookOperations.UpdateBook
     {
         public UpdateBookCommandValidator() 
         {
-            RuleFor(com => com.model.Title).MinimumLength(2);
-            RuleFor(com => com.model.GenreId).GreaterThan(0);
+            RuleFor(com => com.Model.Title).MinimumLength(2);
+            RuleFor(com => com.Model.GenreId).GreaterThan(0);
+            RuleFor(com => com.BookId).GreaterThan(0);
         }
     }
 }

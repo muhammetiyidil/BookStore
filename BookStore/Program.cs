@@ -1,6 +1,7 @@
 using AutoMapper;
 using BookStore.BookOperations.GetBooks;
 using BookStore.DBOperations;
+using BookStore.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System.Reflection;
@@ -36,5 +37,7 @@ using (var scope = app.Services.CreateScope())
     var context = services.GetRequiredService<BookStoreDbContext>();
     DataGenerator.Initialize(services);
 }
+
+app.UseCustomExceptionMiddleware();
 
 app.Run();

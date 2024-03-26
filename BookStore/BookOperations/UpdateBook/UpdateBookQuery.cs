@@ -6,23 +6,24 @@ namespace BookStore.BookOperations.UpdateBook
     {
 
         private readonly BookStoreDbContext dbContext;
-        public UpdatedViewModel model { get; set; }
+        public UpdatedViewModel Model { get; set; }
+        public int BookId { get; set; }
 
         public UpdateBookQuery(BookStoreDbContext dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public void Handle(int id)
+        public void Handle()
         {
-            var book = dbContext.Books.SingleOrDefault(x => x.Id == id);
+            var book = dbContext.Books.SingleOrDefault(x => x.Id == BookId);
             if (book == null)
             {
                 throw new InvalidOperationException("Kitap mevcut değil!");
             }
-            book.GenreId = model.GenreId != default ? model.GenreId : book.GenreId;
+            book.GenreId = Model.GenreId != default ? Model.GenreId : book.GenreId;
             if (book.Title != default)
-                book.Title = model.Title;
+                book.Title = Model.Title;
             dbContext.SaveChanges();
 
         }
