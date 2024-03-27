@@ -1,7 +1,7 @@
 ﻿using BookStore.DBOperations;
-using static BookStore.BookOperations.UpdateBook.UpdateBookQuery;
+using static BookStore.Application.BookOperations.Commands.UpdateBook.UpdateBookQuery;
 
-namespace BookStore.BookOperations.DeleteBook
+namespace BookStore.Application.BookOperations.Commands.DeleteBook
 {
     public class DeleteBookQuery
     {

@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace BookStore.BookOperations.UpdateBook
+namespace BookStore.Application.BookOperations.Commands.UpdateBook
 {
     public class UpdateBookCommandValidator : AbstractValidator<UpdateBookQuery>
     {
-        public UpdateBookCommandValidator() 
+        public UpdateBookCommandValidator()
         {
             RuleFor(com => com.Model.Title).MinimumLength(2);
             RuleFor(com => com.Model.GenreId).GreaterThan(0);

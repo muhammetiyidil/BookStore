@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace BookStore.BookOperations.PostBook
+namespace BookStore.Application.BookOperations.Commands.PostBook
 {
     public class PostBookCommandValidator : AbstractValidator<PostBookQuery>
     {

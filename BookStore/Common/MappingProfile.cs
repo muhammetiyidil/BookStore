@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
-using static BookStore.BookOperations.GetBookDetail.GetBookDetailQuery;
-using static BookStore.BookOperations.GetBooks.GetBooksQuery;
-using static BookStore.BookOperations.PostBook.PostBookQuery;
-using static BookStore.BookOperations.UpdateBook.UpdateBookQuery;
+using BookStore.Entities;
+using static BookStore.Application.BookOperations.Queries.GetBookDetail.GetBookDetailQuery;
+using static BookStore.Application.BookOperations.Queries.GetBooks.GetBooksQuery;
+using static BookStore.Application.BookOperations.Commands.PostBook.PostBookQuery;
+using static BookStore.Application.BookOperations.Commands.UpdateBook.UpdateBookQuery;
+using static BookStore.Application.GenreOperations.Queries.GetGenres.GetGenresQuery;
+using static BookStore.Application.GenreOperations.Queries.GetGenreDetail.GetGenreDetailQuery;
 
 namespace BookStore.Common
 {
@@ -11,9 +14,11 @@ namespace BookStore.Common
         public MappingProfile() 
         {
             CreateMap<PostBookModel, Book>();
-            CreateMap<Book, BookDetailViewModel>().ForMember(dest => dest.Genre, opt => opt.MapFrom(src => ((GenreEnum)src.GenreId).ToString()));
-            CreateMap<Book, BookViewModel>().ForMember(dest => dest.Genre, opt => opt.MapFrom(src => ((GenreEnum)src.GenreId).ToString()))
+            CreateMap<Book, BookDetailViewModel>().ForMember(dest => dest.Genre, opt => opt.MapFrom(src => src.Genre.Name));
+            CreateMap<Book, BookViewModel>().ForMember(dest => dest.Genre, opt => opt.MapFrom(src => src.Genre.Name))
                                             .ForMember(dest => dest.PublishTime, opt => opt.MapFrom(src => src.PublishDate.ToString("dd/MM/yyyy")));
+            CreateMap<Genre, GenresViewModel>();
+            CreateMap<Genre, GenreDetailViewModel>();
         }
     }
 }

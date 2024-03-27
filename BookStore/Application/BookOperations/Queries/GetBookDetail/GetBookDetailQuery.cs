@@ -3,7 +3,7 @@ using BookStore.Common;
 using BookStore.DBOperations;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookStore.BookOperations.GetBookDetail
+namespace BookStore.Application.BookOperations.Queries.GetBookDetail
 {
     public class GetBookDetailQuery
     {
@@ -11,7 +11,7 @@ namespace BookStore.BookOperations.GetBookDetail
         private readonly IMapper _mapper;
         public BookDetailViewModel Model { get; set; }
         public int Id { get; set; }
-        public GetBookDetailQuery (BookStoreDbContext dbContext, IMapper mapper)
+        public GetBookDetailQuery(BookStoreDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             _mapper = mapper;
@@ -19,7 +19,7 @@ namespace BookStore.BookOperations.GetBookDetail
 
         public BookDetailViewModel Handle()
         {
-            var book = dbContext.Books.SingleOrDefault(x => x.Id == Id);
+            var book = dbContext.Books.Include(x => x.Genre).SingleOrDefault(x => x.Id == Id);
             if (book == null)
             {
                 throw new InvalidOperationException("Kitap mevcut değil!");

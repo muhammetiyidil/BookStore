@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BookStore
+namespace BookStore.Entities
 {
     public class Book
     {
@@ -11,8 +11,10 @@ namespace BookStore
 
         public int GenreId { get; set; }
 
+        public Genre Genre { get; set; }
+
         public int PageCount { get; set; }
 
-        public DateTime PublishDate { get; set; } 
+        public DateTime PublishDate { get; set; }
     }
 }

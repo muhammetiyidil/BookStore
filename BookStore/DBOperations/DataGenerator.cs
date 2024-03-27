@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BookStore.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.DBOperations
 {
@@ -12,6 +13,22 @@ namespace BookStore.DBOperations
                 {
                     return;
                 }
+
+                context.Genres.AddRange(
+                    new Genre
+                    {
+                        Name = "Personal Growth"
+
+                    },
+                    new Genre
+                    {
+                        Name = "Science Fiction"
+                    },
+                    new Genre 
+                    {
+                        Name = "Romance"
+                    }
+                    );
 
                 context.Books.AddRange(new Book { Id = 1, Title = "İnsan Neyle Yaşar", GenreId = 1, PageCount = 120, PublishDate = new DateTime(2004, 02, 28) },
                                        new Book { Id = 2, Title = "Lean Personal", GenreId = 1, PageCount = 200, PublishDate = new DateTime(2004, 04, 30) },

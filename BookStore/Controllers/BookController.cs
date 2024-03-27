@@ -1,22 +1,22 @@
 ﻿using AutoMapper;
-using BookStore.BookOperations.DeleteBook;
-using BookStore.BookOperations.GetBookDetail;
-using BookStore.BookOperations.GetBooks;
-using BookStore.BookOperations.PostBook;
-using BookStore.BookOperations.UpdateBook;
+using BookStore.Application.BookOperations.Commands.DeleteBook;
+using BookStore.Application.BookOperations.Commands.PostBook;
 using BookStore.DBOperations;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections;
-using static BookStore.BookOperations.DeleteBook.DeleteBookQuery;
-using static BookStore.BookOperations.GetBookDetail.GetBookDetailQuery;
-using static BookStore.BookOperations.GetBooks.GetBooksQuery;
-using static BookStore.BookOperations.PostBook.PostBookQuery;
-using static BookStore.BookOperations.UpdateBook.UpdateBookQuery;
+using static BookStore.Application.BookOperations.Commands.DeleteBook.DeleteBookQuery;
+using static BookStore.Application.BookOperations.Queries.GetBookDetail.GetBookDetailQuery;
+using static BookStore.Application.BookOperations.Queries.GetBooks.GetBooksQuery;
+using static BookStore.Application.BookOperations.Commands.PostBook.PostBookQuery;
+using static BookStore.Application.BookOperations.Commands.UpdateBook.UpdateBookQuery;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static System.Reflection.Metadata.BlobBuilder;
+using BookStore.Application.BookOperations.Commands.UpdateBook;
+using BookStore.Application.BookOperations.Queries.GetBookDetail;
+using BookStore.Application.BookOperations.Queries.GetBooks;
 
 namespace BookStore.Controllers
 {

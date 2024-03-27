@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace BookStore.BookOperations.DeleteBook
+namespace BookStore.Application.BookOperations.Commands.DeleteBook
 {
     public class DeleteBookCommandValidator : AbstractValidator<DeleteBookQuery>
     {
-        public DeleteBookCommandValidator() 
+        public DeleteBookCommandValidator()
         {
             RuleFor(command => command.Model.Title).MinimumLength(2);
         }

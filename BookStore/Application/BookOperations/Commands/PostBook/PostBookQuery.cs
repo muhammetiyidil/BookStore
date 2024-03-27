@@ -1,10 +1,10 @@
 ﻿using BookStore.DBOperations;
 using Microsoft.AspNetCore.Mvc;
-using BookStore.BookOperations.GetBooks;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using BookStore.Entities;
 
-namespace BookStore.BookOperations.PostBook
+namespace BookStore.Application.BookOperations.Commands.PostBook
 {
     public class PostBookQuery
     {
@@ -17,7 +17,7 @@ namespace BookStore.BookOperations.PostBook
             _dbContext = dbContext;
             _mapper = mapper;
         }
-        
+
         public void Handle()
         {
             var book = _dbContext.Books.SingleOrDefault(x => x.Title == Model.Title);

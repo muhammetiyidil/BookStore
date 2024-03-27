@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
 
-namespace BookStore.BookOperations.GetBookDetail
+namespace BookStore.Application.BookOperations.Queries.GetBookDetail
 {
     public class GetBookDetailCommandValidator : AbstractValidator<GetBookDetailQuery>
     {
-        public GetBookDetailCommandValidator() 
+        public GetBookDetailCommandValidator()
         {
             RuleFor(command => command.Id).GreaterThan(0);
         }
